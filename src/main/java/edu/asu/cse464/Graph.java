@@ -58,6 +58,19 @@ public class Graph {
         }
     }
 
+    public void outputDOTGraph(String path) throws IOException {
+        try (FileWriter writer = new FileWriter(path)) {
+            writer.write("digraph G {\n");
+            for (String node : nodes) {
+                writer.write("    " + node + ";\n");
+            }
+            for (GraphEdge edge : edges) {
+                writer.write("    " + edge.getSrc() + " -> " + edge.getDst() + ";\n");
+            }
+            writer.write("}\n");
+        }
+    }
+
     @Override
     public String toString() {
         String nodeList = nodes.stream().collect(Collectors.joining(", "));
