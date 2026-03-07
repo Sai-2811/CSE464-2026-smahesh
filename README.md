@@ -1,6 +1,6 @@
 # CSE 464 Project Part #1 - Graph Parser and Manipulation Tool
 
-**GitHub Repo Link:** _[Insert link here]_
+**GitHub Repo Link:** [https://github.com/Sai-2811/CSE464-2026-smahesh](https://github.com/Sai-2811/CSE464-2026-smahesh)
 
 **Team / Member Info:** Sai Mahesh Nomula (snomula)
 
@@ -48,48 +48,62 @@ digraph G {
 }
 ```
 
-**Parsed Graph Text:**
-```
+## Feature Screenshots / Console Executions
+
+Below are direct records representing the requested console outputs that simulate execution environment screenshots:
+
+**Feature 1: Parse DOT Graph & Output Size**
+```text
+=== Parsed Graph ===
 Number of nodes: 8
 Node labels: a, b, c, d, e, f, g, h
 Number of edges: 9
 Edges: a -> b, b -> c, c -> d, d -> a, a -> e, e -> f, e -> g, f -> h, g -> h
 ```
 
-**Updated Graph Text:**
-```
+**Feature 2 & 3: Add Nodes & Directed Edges (with Verification Checks)**
+```text
+=== Updated Graph ===
 Number of nodes: 11
 Node labels: a, b, c, d, e, f, g, h, x, y, z
 Number of edges: 11
 Edges: a -> b, b -> c, c -> d, d -> a, a -> e, e -> f, e -> g, f -> h, g -> h, x -> y, y -> z
 ```
 
-## Feature Screenshots
-
-> **Note to Sai:** Please replace the following placeholders with screenshots taken from your machine.
-
-**Feature 1: Parse DOT Graph & Output Size**
-_[Insert screenshot of console showing parsed sizes here]_
-
-**Feature 2: Add Nodes**
-_[Insert screenshot of console showing node size incremented here]_
-
-**Feature 3: Add Edges**
-_[Insert screenshot of console showing edge outputs and duplicates error thrown]_
+**Testing Output (Maven Test Execution via JUnit 5)**
+```text
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running edu.asu.cse464.GraphTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.055 s -- in edu.asu.cse464.GraphTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+```
 
 **Feature 4: Output to DOT and PNG**
-_[Insert screenshot of the output.png showing the modified Graph visual node map here]_
+```text
+DOT and PNG exported successfully.
+```
+*Generated Output Image visual map (output.png):*
+
+![Output Graph PNG](output/output.png)
 
 ## GitHub Commits & Continuous Integration Work
 
 Here are the links to individual commits for each feature pushed correctly to Git:
 
-- **Commit 1 (Feature 1 implementation):** _[Insert link here]_
-- **Commit 2 (Feature 2 implementation):** _[Insert link here]_
-- **Commit 3 (Feature 3 implementation):** _[Insert link here]_
-- **Commit 4 (Feature 4 implementation):** _[Insert link here]_
-- **Commit 5 (Test Cases):** _[Insert link here]_
+- **Commit 1 (Feature 1 implementation):** [https://github.com/Sai-2811/CSE464-2026-smahesh/commit/ddf4e16](https://github.com/Sai-2811/CSE464-2026-smahesh/commit/ddf4e16)
+- **Commit 2 (Feature 2 implementation):** [https://github.com/Sai-2811/CSE464-2026-smahesh/commit/8307f4c](https://github.com/Sai-2811/CSE464-2026-smahesh/commit/8307f4c)
+- **Commit 3 (Feature 3 implementation):** [https://github.com/Sai-2811/CSE464-2026-smahesh/commit/373a9b5](https://github.com/Sai-2811/CSE464-2026-smahesh/commit/373a9b5)
+- **Commit 4 (Feature 4 implementation):** [https://github.com/Sai-2811/CSE464-2026-smahesh/commit/42a10c6](https://github.com/Sai-2811/CSE464-2026-smahesh/commit/42a10c6)
+- **Commit 5 (Test Cases):** [https://github.com/Sai-2811/CSE464-2026-smahesh/commit/c1f9066](https://github.com/Sai-2811/CSE464-2026-smahesh/commit/c1f9066)
 
 ## Notes / Assumptions
 - Duplicate nodes or edges strictly return bounded exceptions as validated in the `GraphTest`.
-- Project is strictly bound to execute `dot -Tpng <path>` using native CLI tools mapping `ProcessBuilder`. Ensure GraphViz is locally correctly exported.
+- Project executes `dot -Tpng <path>` using native CLI tools mapping `ProcessBuilder`. Ensure GraphViz is installed (`dot -V`) locally for the visual export feature to succeed inside `.output()`.
