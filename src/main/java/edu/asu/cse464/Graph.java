@@ -29,6 +29,21 @@ public class Graph {
         }
     }
 
+    public void addEdge(String srcLabel, String dstLabel) {
+        if (!nodes.contains(srcLabel)) {
+            throw new IllegalArgumentException("Source node does not exist: " + srcLabel);
+        }
+        if (!nodes.contains(dstLabel)) {
+            throw new IllegalArgumentException("Destination node does not exist: " + dstLabel);
+        }
+
+        GraphEdge edge = new GraphEdge(srcLabel, dstLabel);
+        if (edges.contains(edge)) {
+            throw new IllegalArgumentException("Duplicate edge: " + edge);
+        }
+        edges.add(edge);
+    }
+
     public Set<String> getNodes() {
         return nodes;
     }
