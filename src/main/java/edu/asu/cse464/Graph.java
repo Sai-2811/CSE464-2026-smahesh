@@ -5,6 +5,12 @@ import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Queue;
+import java.util.LinkedList;
+import java.util.HashSet;
+import java.util.Arrays;
+import java.util.ArrayList;
 
 public class Graph {
     private final Set<String> nodes = new LinkedHashSet<>();
@@ -67,6 +73,34 @@ public class Graph {
             throw new IllegalArgumentException("Edge does not exist: " + edge);
         }
         edges.remove(edge);
+    }
+
+    public Path GraphSearch(Node src, Node dst) {
+        if (!nodes.contains(src.getLabel()) || !nodes.contains(dst.getLabel())) return null;
+        Queue<List<String>> queue = new LinkedList<>();
+        Set<String> visited = new HashSet<>();
+        
+        queue.add(Arrays.asList(src.getLabel()));
+        visited.add(src.getLabel());
+        
+        while (!queue.isEmpty()) {
+            List<String> path = queue.poll();
+            String current = path.get(path.size() - 1);
+            
+            if (current.equals(dst.getLabel())) {
+                return new Path(path);
+            }
+            
+            for (GraphEdge edge : edges) {
+                if (edge.getSrc().equals(current) && !visited.contains(edge.getDst())) {
+                    visited.add(edge.getDst());
+                    List<String> newPath = new ArrayList<>(path);
+                    newPath.add(edge.getDst());
+                    queue.add(newPath);
+                }
+            }
+        }
+        return null;
     }
 
     public Set<String> getNodes() {
