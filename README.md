@@ -117,10 +117,19 @@ I made sure to commit my work frequently and logically, keeping each feature in 
 - **Unit Tests:** [View Commit](https://github.com/Sai-2811/CSE464-2026-smahesh/commit/c1f9066)
 
 ## Part 2 Features
-In Part 2, additional features were added per the requirements:
-- **Remove APIs:** APIs to remove nodes and edges, along with test coverage scenarios.
-- **GitHub Actions (CI):** A continuous integration workflow is present that builds and tests the Maven project.
-- **Graph Search Algorithms:** Breadth-First and Depth-First Search algorithms implemented in separate branches, returning a `Path` populated with `Node` elements.
-- **Merge Conflicts Resolving:** The `bfs` and `dfs` branches were successfully merged into `main` and conflicts were resolved using an `Algorithm` enum to select the right algorithm path.
+In Part 2, additional features were added per the requirements. Here are the relevant links for verification:
 
-Thanks for taking the time to review my project! Let me know if you have any questions. Check out the commits for implementation details.
+- **Continuous Integration (CI):** A GitHub Actions workflow builds and tests the code.
+  - [View CI Actions](https://github.com/Sai-2811/CSE464-2026-smahesh/actions)
+- **Remove APIs:** APIs to remove nodes and edges with robust test coverage.
+  - [View Commit (7fe4985)](https://github.com/Sai-2811/CSE464-2026-smahesh/commit/7fe4985)
+- **BFS Branch and Feature:** Breadth-First GraphSearch algorithm.
+  - [View `bfs` Branch](https://github.com/Sai-2811/CSE464-2026-smahesh/tree/bfs)
+  - [View BFS Commit (de7ac3a)](https://github.com/Sai-2811/CSE464-2026-smahesh/commit/de7ac3a)
+- **DFS Branch and Feature:** Depth-First GraphSearch algorithm.
+  - [View `dfs` Branch](https://github.com/Sai-2811/CSE464-2026-smahesh/tree/dfs)
+  - [View DFS Commit (13a7e5d)](https://github.com/Sai-2811/CSE464-2026-smahesh/commit/13a7e5d)
+- **Merge & Conflict Resolution:** The `bfs` and `dfs` branches were merged into `main` and conflicts resolved using an `Algorithm` enum.
+  - [View Merge Commit (a193f97)](https://github.com/Sai-2811/CSE464-2026-smahesh/commit/a193f97)
+
+Thanks for taking the time to review my project! Let me know if you have any questions.
