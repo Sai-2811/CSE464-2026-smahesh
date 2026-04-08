@@ -117,19 +117,16 @@ I made sure to commit my work frequently and logically, keeping each feature in 
 - **Unit Tests:** [View Commit](https://github.com/Sai-2811/CSE464-2026-smahesh/commit/c1f9066)
 
 ## Part 2 Features
-In Part 2, additional features were added per the requirements. Here are the relevant links for verification:
+For Part 2, I expanded my project to include all of the new requested features. Here are the specific links verifying everything works:
 
-- **Continuous Integration (CI):** A GitHub Actions workflow builds and tests the code.
-  - [View CI Actions](https://github.com/Sai-2811/CSE464-2026-smahesh/actions)
-- **Remove APIs:** APIs to remove nodes and edges with robust test coverage.
+- **Continuous Integration (CI):** I set up a GitHub Actions workflow so every push automatically triggers a Maven build and test run. It works perfectly!
+  - [View my CI Actions](https://github.com/Sai-2811/CSE464-2026-smahesh/actions)
+- **Remove APIs:** I implemented `removeNode`, `removeNodes`, and `removeEdge`. I also made sure to write comprehensive JUnit tests that verify nodes and edges are really removed, and that we throw the correct exceptions when trying to remove things that don't exist.
   - [View Commit (7fe4985)](https://github.com/Sai-2811/CSE464-2026-smahesh/commit/7fe4985)
-- **BFS Branch and Feature:** Breadth-First GraphSearch algorithm.
-  - [View `bfs` Branch](https://github.com/Sai-2811/CSE464-2026-smahesh/tree/bfs)
-  - [View BFS Commit (de7ac3a)](https://github.com/Sai-2811/CSE464-2026-smahesh/commit/de7ac3a)
-- **DFS Branch and Feature:** Depth-First GraphSearch algorithm.
-  - [View `dfs` Branch](https://github.com/Sai-2811/CSE464-2026-smahesh/tree/dfs)
-  - [View DFS Commit (13a7e5d)](https://github.com/Sai-2811/CSE464-2026-smahesh/commit/13a7e5d)
-- **Merge & Conflict Resolution:** The `bfs` and `dfs` branches were merged into `main` and conflicts resolved using an `Algorithm` enum.
+- **Graph Search Algorithms:** I created two new branches to implement Breadth-First Search (BFS) and Depth-First Search (DFS). Both implementations successfully return a `Path` populated with `Node` elements!
+  - **BFS Branch:** [View Branch](https://github.com/Sai-2811/CSE464-2026-smahesh/tree/bfs) | [View Commit (de7ac3a)](https://github.com/Sai-2811/CSE464-2026-smahesh/commit/de7ac3a)
+  - **DFS Branch:** [View Branch](https://github.com/Sai-2811/CSE464-2026-smahesh/tree/dfs) | [View Commit (13a7e5d)](https://github.com/Sai-2811/CSE464-2026-smahesh/commit/13a7e5d)
+- **Merge & Conflict Resolution:** I merged both `bfs` and `dfs` branches back into `main`. This created the expected merge conflict, which I successfully resolved by combining them into a single `GraphSearch` method that accepts an `Algorithm` enum (BFS or DFS)!
   - [View Merge Commit (a193f97)](https://github.com/Sai-2811/CSE464-2026-smahesh/commit/a193f97)
 
-Thanks for taking the time to review my project! Let me know if you have any questions.
+Thanks again for reviewing my project! Feel free to check out the commits for the implementation details.
