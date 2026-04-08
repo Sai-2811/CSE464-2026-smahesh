@@ -44,6 +44,31 @@ public class Graph {
         edges.add(edge);
     }
 
+    public void removeNode(String label) {
+        if (!nodes.contains(label)) {
+            throw new IllegalArgumentException("Node does not exist: " + label);
+        }
+        nodes.remove(label);
+        edges.removeIf(edge -> edge.getSrc().equals(label) || edge.getDst().equals(label));
+    }
+
+    public void removeNodes(String[] labels) {
+        if (labels == null) {
+            throw new IllegalArgumentException("Labels array cannot be null");
+        }
+        for (String label : labels) {
+            removeNode(label);
+        }
+    }
+
+    public void removeEdge(String srcLabel, String dstLabel) {
+        GraphEdge edge = new GraphEdge(srcLabel, dstLabel);
+        if (!edges.contains(edge)) {
+            throw new IllegalArgumentException("Edge does not exist: " + edge);
+        }
+        edges.remove(edge);
+    }
+
     public Set<String> getNodes() {
         return nodes;
     }

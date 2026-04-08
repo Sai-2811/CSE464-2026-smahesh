@@ -60,6 +60,37 @@ public class GraphTest {
     }
 
     @Test
+    public void testRemoveNode() {
+        Graph graph = new Graph();
+        graph.addNodes(new String[]{"a", "b", "c"});
+        graph.addEdge("a", "b");
+        graph.addEdge("b", "c");
+        graph.removeNode("b");
+        assertFalse(graph.getNodes().contains("b"));
+        assertEquals(0, graph.getEdges().size());
+        assertThrows(IllegalArgumentException.class, () -> graph.removeNode("z"));
+    }
+
+    @Test
+    public void testRemoveNodes() {
+        Graph graph = new Graph();
+        graph.addNodes(new String[]{"a", "b", "c"});
+        graph.removeNodes(new String[]{"a", "b"});
+        assertEquals(1, graph.getNodes().size());
+        assertTrue(graph.getNodes().contains("c"));
+    }
+
+    @Test
+    public void testRemoveEdge() {
+        Graph graph = new Graph();
+        graph.addNodes(new String[]{"a", "b"});
+        graph.addEdge("a", "b");
+        graph.removeEdge("a", "b");
+        assertEquals(0, graph.getEdges().size());
+        assertThrows(IllegalArgumentException.class, () -> graph.removeEdge("a", "b"));
+    }
+
+    @Test
     public void testToStringOutput() throws Exception {
         Graph graph = new Graph();
         graph.addNodes(new String[]{"a", "b"});
