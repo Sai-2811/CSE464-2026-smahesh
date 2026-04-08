@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import java.util.List;
 import java.util.Queue;
 import java.util.LinkedList;
+import java.util.Stack;
 import java.util.HashSet;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -75,28 +76,43 @@ public class Graph {
         edges.remove(edge);
     }
 
-    public Path GraphSearch(Node src, Node dst) {
+    public Path GraphSearch(Node src, Node dst, Algorithm algo) {
         if (!nodes.contains(src.getLabel()) || !nodes.contains(dst.getLabel())) return null;
-        Queue<List<String>> queue = new LinkedList<>();
-        Set<String> visited = new HashSet<>();
-        
-        queue.add(Arrays.asList(src.getLabel()));
-        visited.add(src.getLabel());
-        
-        while (!queue.isEmpty()) {
-            List<String> path = queue.poll();
-            String current = path.get(path.size() - 1);
-            
-            if (current.equals(dst.getLabel())) {
-                return new Path(path);
+        if (algo == Algorithm.BFS) {
+            Queue<List<String>> queue = new LinkedList<>();
+            Set<String> visited = new HashSet<>();
+            queue.add(Arrays.asList(src.getLabel()));
+            visited.add(src.getLabel());
+            while (!queue.isEmpty()) {
+                List<String> path = queue.poll();
+                String current = path.get(path.size() - 1);
+                if (current.equals(dst.getLabel())) return new Path(path);
+                for (GraphEdge edge : edges) {
+                    if (edge.getSrc().equals(current) && !visited.contains(edge.getDst())) {
+                        visited.add(edge.getDst());
+                        List<String> newPath = new ArrayList<>(path);
+                        newPath.add(edge.getDst());
+                        queue.add(newPath);
+                    }
+                }
             }
-            
-            for (GraphEdge edge : edges) {
-                if (edge.getSrc().equals(current) && !visited.contains(edge.getDst())) {
-                    visited.add(edge.getDst());
-                    List<String> newPath = new ArrayList<>(path);
-                    newPath.add(edge.getDst());
-                    queue.add(newPath);
+        } else if (algo == Algorithm.DFS) {
+            Stack<List<String>> stack = new Stack<>();
+            Set<String> visited = new HashSet<>();
+            stack.push(Arrays.asList(src.getLabel()));
+            while (!stack.isEmpty()) {
+                List<String> path = stack.pop();
+                String current = path.get(path.size() - 1);
+                if (current.equals(dst.getLabel())) return new Path(path);
+                if (!visited.contains(current)) {
+                    visited.add(current);
+                    for (GraphEdge edge : edges) {
+                        if (edge.getSrc().equals(current) && !visited.contains(edge.getDst())) {
+                            List<String> newPath = new ArrayList<>(path);
+                            newPath.add(edge.getDst());
+                            stack.push(newPath);
+                        }
+                    }
                 }
             }
         }

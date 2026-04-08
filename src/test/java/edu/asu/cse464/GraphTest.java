@@ -99,12 +99,29 @@ public class GraphTest {
         graph.addEdge("A", "D");
         graph.addEdge("D", "C");
         
-        Path path = graph.GraphSearch(new Node("A"), new Node("C"));
+        Path path = graph.GraphSearch(new Node("A"), new Node("C"), Algorithm.BFS);
         assertNotNull(path);
         // BFS should find the shortest path, e.g., A -> B -> C or A -> D -> C
         assertEquals(3, path.getNodes().size());
         
-        Path noPath = graph.GraphSearch(new Node("C"), new Node("A"));
+        Path noPath = graph.GraphSearch(new Node("C"), new Node("A"), Algorithm.BFS);
+        assertNull(noPath);
+    }
+
+    @Test
+    public void testGraphSearchDFS() {
+        Graph graph = new Graph();
+        graph.addNodes(new String[]{"A", "B", "C", "D"});
+        graph.addEdge("A", "B");
+        graph.addEdge("B", "C");
+        graph.addEdge("A", "D");
+        graph.addEdge("D", "C");
+        
+        Path path = graph.GraphSearch(new Node("A"), new Node("C"), Algorithm.DFS);
+        assertNotNull(path);
+        assertTrue(path.getNodes().size() >= 3);
+        
+        Path noPath = graph.GraphSearch(new Node("C"), new Node("A"), Algorithm.DFS);
         assertNull(noPath);
     }
 
