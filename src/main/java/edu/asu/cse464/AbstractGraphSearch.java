@@ -32,14 +32,16 @@ public abstract class AbstractGraphSearch implements SearchStrategy {
      * Marked {@code final} so subclasses cannot accidentally change the
      * algorithm shape — only the primitive operations.
      */
+    private void validateNodeExists(Graph graph, String label, String type) {
+        if (!graph.getNodes().contains(label)) {
+            throw new IllegalArgumentException(type + " node does not exist: " + label);
+        }
+    }
+
     @Override
     public final Path search(Graph graph, String srcLabel, String dstLabel) {
-        if (!graph.getNodes().contains(srcLabel)) {
-            throw new IllegalArgumentException("Source node does not exist: " + srcLabel);
-        }
-        if (!graph.getNodes().contains(dstLabel)) {
-            throw new IllegalArgumentException("Destination node does not exist: " + dstLabel);
-        }
+        validateNodeExists(graph, srcLabel, "Source");
+        validateNodeExists(graph, dstLabel, "Destination");
 
         Node src = new Node(srcLabel);
         Node dst = new Node(dstLabel);
