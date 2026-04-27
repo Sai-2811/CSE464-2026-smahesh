@@ -5,6 +5,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+/**
+ * Parses a DOT-format file into a {@link Graph}. Refactor #2 broke the
+ * original monolithic loop into small, named helpers so each step has a
+ * single responsibility.
+ */
 public class GraphParser {
 
     public static Graph parseGraph(String filepath) throws IOException {
@@ -14,38 +19,61 @@ public class GraphParser {
         for (String rawLine : lines) {
             String line = rawLine.trim();
 
-            if (line.isEmpty() || line.startsWith("//") || line.equals("digraph G {") || line.equals("{") || line.equals("}")) {
+            if (isSkippable(line)) {
                 continue;
             }
 
-            line = line.replace(";", "").trim();
+            line = stripTerminator(line);
 
-            if (line.contains("->")) {
-                String[] parts = line.split("->");
-                if (parts.length != 2) {
-                    throw new IllegalArgumentException("Invalid DOT edge line: " + rawLine);
-                }
-
-                String src = parts[0].trim();
-                String dst = parts[1].trim();
-
-                if (!graph.getNodes().contains(src)) {
-                    graph.getNodes().add(src);
-                }
-                if (!graph.getNodes().contains(dst)) {
-                    graph.getNodes().add(dst);
-                }
-
-                if (!graph.getEdges().contains(new GraphEdge(src, dst))) {
-                    graph.getEdges().add(new GraphEdge(src, dst));
-                }
+            if (isEdgeLine(line)) {
+                handleEdgeLine(graph, line, rawLine);
             } else {
-                if (!graph.getNodes().contains(line)) {
-                    graph.getNodes().add(line);
-                }
+                handleNodeLine(graph, line);
             }
         }
-
         return graph;
+    }
+
+    private static boolean isSkippable(String line) {
+        return line.isEmpty()
+                || line.startsWith(GraphConstants.COMMENT_PREFIX)
+                || line.equals(GraphConstants.DIGRAPH_HEADER)
+                || line.equals(GraphConstants.OPEN_BRACE)
+                || line.equals(GraphConstants.CLOSE_BRACE);
+    }
+
+    private static String stripTerminator(String line) {
+        return line.replace(GraphConstants.STATEMENT_TERMINATOR, "").trim();
+    }
+
+    private static boolean isEdgeLine(String line) {
+        return line.contains(GraphConstants.EDGE_ARROW);
+    }
+
+    private static void handleEdgeLine(Graph graph, String line, String rawLine) {
+        String[] parts = line.split(GraphConstants.EDGE_ARROW);
+        if (parts.length != 2) {
+            throw new IllegalArgumentException("Invalid DOT edge line: " + rawLine);
+        }
+        String src = parts[0].trim();
+        String dst = parts[1].trim();
+
+        ensureNode(graph, src);
+        ensureNode(graph, dst);
+
+        GraphEdge edge = new GraphEdge(src, dst);
+        if (!graph.getEdges().contains(edge)) {
+            graph.getEdges().add(edge);
+        }
+    }
+
+    private static void handleNodeLine(Graph graph, String line) {
+        ensureNode(graph, line);
+    }
+
+    private static void ensureNode(Graph graph, String label) {
+        if (!graph.getNodes().contains(label)) {
+            graph.getNodes().add(label);
+        }
     }
 }
