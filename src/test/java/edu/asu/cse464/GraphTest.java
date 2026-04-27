@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GraphTest {
 
     // ========== Part 1 Tests ==========
+    // Note: test1.dot contains a simple 4-node directed graph (a->b, b->c, c->d).
 
     @Test
     public void testParseGraph() throws Exception {
