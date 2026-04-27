@@ -42,7 +42,7 @@ public class Path {
 
     /**
      * Returns a new {@code Path} that contains all nodes of this path with
-     * the specified node appended. The receiver is left unchanged.
+     * the specified node appended. The receiver is left immutable and unchanged.
      */
     public Path extend(Node next) {
         List<Node> extended = new ArrayList<>(this.nodes);
