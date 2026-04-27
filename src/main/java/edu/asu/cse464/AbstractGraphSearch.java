@@ -4,26 +4,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Template Method base class for frontier-based graph search.
+ * This is the base class for searching graphs using the Template Method pattern.
  *
- * <p>The skeleton of the algorithm is fixed in {@link #search(Graph, String, String)}:
- * <ol>
- *   <li>Validate inputs.</li>
- *   <li>Initialize the frontier with the starting path.</li>
- *   <li>Loop: pull a path from the frontier, log it, return if it ends at
- *       the destination, otherwise extend it by every unvisited neighbor and
- *       push the extensions back into the frontier.</li>
- * </ol>
+ * The main search logic is locked in the search() method so we don't mess it up:
+ * 1. Check if the nodes actually exist.
+ * 2. Start the list with the source node.
+ * 3. Keep pulling paths, check if we reached the end, and if not,
+ *    add all unvisited neighbors back to our list.
  *
- * <p>Subclasses customize three primitive operations:
- * <ul>
- *   <li>{@link #initFrontier(Path)} — how to seed the frontier.</li>
- *   <li>{@link #fetchNext()} — how to pick the next path to explore.</li>
- *   <li>{@link #addToFrontier(Path)} — how to put a new path back.</li>
- * </ul>
+ * Subclasses just need to tell it:
+ * - How to start the list (initFrontier)
+ * - How to pick the next path (fetchNext)
+ * - How to add a path back (addToFrontier)
  *
- * <p>BFS uses a FIFO queue, DFS uses a LIFO stack, random walk samples
- * uniformly from the frontier — same skeleton, different policies.
+ * For example, BFS uses a Queue, DFS uses a Stack, and RandomWalk just picks randomly!
  */
 public abstract class AbstractGraphSearch implements SearchStrategy {
 

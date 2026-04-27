@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Represents an ordered sequence of nodes describing a path from a source
- * node to a destination node in a {@link Graph}.
+ * Just a simple class to hold a sequence of nodes that make up a path.
+ * We use this to keep track of how we got from the start node to the current node.
  */
 public class Path {
 

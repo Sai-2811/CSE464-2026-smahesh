@@ -7,11 +7,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * In-memory directed graph.
+ * A basic directed graph stored in memory.
  *
- * <p>Search is delegated to {@link SearchStrategy} instances chosen at
- * runtime by {@link Algorithm} (Strategy Pattern). The strategies share an
- * algorithm skeleton via {@link AbstractGraphSearch} (Template Pattern).
+ * We use the Strategy Pattern to pick how we search (BFS, DFS, or Random Walk)
+ * based on the Algorithm enum. The actual search logic shares a common template
+ * (Template Pattern) to avoid writing the same loop over and over.
  */
 public class Graph {
 

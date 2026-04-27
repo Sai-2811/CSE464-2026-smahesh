@@ -5,10 +5,9 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Random walk implementation of the search template. The frontier is a list
- * and the next path to explore is drawn uniformly at random. This produces
- * different traversal orders on each run while still leveraging the same
- * template skeleton as BFS and DFS.
+ * A search strategy that just picks a random path to explore next.
+ * It uses a simple list to hold the paths and picks one randomly each time.
+ * It's cool because it gives a different path every time you run it!
  */
 public class RandomWalkSearch extends AbstractGraphSearch {
 
