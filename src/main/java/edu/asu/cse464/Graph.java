@@ -90,6 +90,11 @@ public class Graph {
         return strategy.search(this, src, dst);
     }
 
+    /**
+     * Factory method to instantiate the correct SearchStrategy.
+     * To add a new algorithm in the future, add it to the Algorithm enum
+     * and add a new case here returning the new strategy implementation.
+     */
     private SearchStrategy createStrategy(Algorithm algo) {
         if (algo == null) {
             throw new IllegalArgumentException("Algorithm cannot be null");
