@@ -19,7 +19,7 @@ public class RandomWalkSearch extends AbstractGraphSearch {
         this(new Random());
     }
 
-    /** Test-friendly constructor; lets callers pin the seed for determinism. */
+    /** Test-only constructor; lets callers pin the seed for determinism. */
     public RandomWalkSearch(Random random) {
         this.random = random;
     }
