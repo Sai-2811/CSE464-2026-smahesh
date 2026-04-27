@@ -130,3 +130,12 @@ For Part 2, I expanded my project to include all of the new requested features. 
   - [View Merge Commit (a193f97)](https://github.com/Sai-2811/CSE464-2026-smahesh/commit/a193f97)
 
 Thanks again for reviewing my project! Feel free to check out the commits for the implementation details.
+
+## Part 3: Design Patterns & Refactoring
+For Part 3, I applied code refactoring principles, introduced the Template Method and Strategy design patterns, and implemented a Random Walk search algorithm. Here are the specific links verifying everything works:
+
+- **Refactoring:** I extracted magic strings, separated methods in my Parser and Exporter, and introduced a new `Node` class. [View Commit (a48906e)](https://github.com/Sai-2811/CSE464-2026-smahesh/commit/a48906e)
+- **Template Method Pattern:** I abstracted the graph search logic into `AbstractGraphSearch` with `BFS` and `DFS` subclasses. [View Commit (2285f51)](https://github.com/Sai-2811/CSE464-2026-smahesh/commit/2285f51)
+- **Strategy Pattern:** I created a `SearchStrategy` interface and updated `Graph` to use a factory method. [View Commit (0f21b18)](https://github.com/Sai-2811/CSE464-2026-smahesh/commit/0f21b18)
+- **Random Walk:** I implemented a new `RandomWalkSearch` algorithm using the new patterns. [View Commit (b4aed30)](https://github.com/Sai-2811/CSE464-2026-smahesh/commit/b4aed30)
+- **Pull Request & Review:** I opened a Pull Request for this work, completed a 5-comment peer review, and addressed all feedback. [View PR #1](https://github.com/Sai-2811/CSE464-2026-smahesh/pull/1)

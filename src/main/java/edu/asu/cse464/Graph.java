@@ -5,17 +5,20 @@ import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.List;
-import java.util.Queue;
-import java.util.LinkedList;
-import java.util.Stack;
-import java.util.HashSet;
-import java.util.Arrays;
-import java.util.ArrayList;
 
+/**
+ * A basic directed graph stored in memory.
+ *
+ * We use the Strategy Pattern to pick how we search (BFS, DFS, or Random Walk)
+ * based on the Algorithm enum. The actual search logic shares a common template
+ * (Template Pattern) to avoid writing the same loop over and over.
+ */
 public class Graph {
+
     private final Set<String> nodes = new LinkedHashSet<>();
     private final Set<GraphEdge> edges = new LinkedHashSet<>();
+
+    // ---------- node/edge mutators ----------
 
     public void addNode(String label) {
         if (label == null || label.trim().isEmpty()) {
@@ -43,7 +46,6 @@ public class Graph {
         if (!nodes.contains(dstLabel)) {
             throw new IllegalArgumentException("Destination node does not exist: " + dstLabel);
         }
-
         GraphEdge edge = new GraphEdge(srcLabel, dstLabel);
         if (edges.contains(edge)) {
             throw new IllegalArgumentException("Duplicate edge: " + edge);
@@ -55,8 +57,8 @@ public class Graph {
         if (!nodes.contains(label)) {
             throw new IllegalArgumentException("Node does not exist: " + label);
         }
+        edges.removeIf(e -> e.getSrc().equals(label) || e.getDst().equals(label));
         nodes.remove(label);
-        edges.removeIf(edge -> edge.getSrc().equals(label) || edge.getDst().equals(label));
     }
 
     public void removeNodes(String[] labels) {
@@ -71,53 +73,42 @@ public class Graph {
     public void removeEdge(String srcLabel, String dstLabel) {
         GraphEdge edge = new GraphEdge(srcLabel, dstLabel);
         if (!edges.contains(edge)) {
-            throw new IllegalArgumentException("Edge does not exist: " + edge);
+            throw new IllegalArgumentException(
+                    "Edge does not exist: " + srcLabel + " " + GraphConstants.EDGE_ARROW + " " + dstLabel);
         }
         edges.remove(edge);
     }
 
-    public Path GraphSearch(Node src, Node dst, Algorithm algo) {
-        if (!nodes.contains(src.getLabel()) || !nodes.contains(dst.getLabel())) return null;
-        if (algo == Algorithm.BFS) {
-            Queue<List<String>> queue = new LinkedList<>();
-            Set<String> visited = new HashSet<>();
-            queue.add(Arrays.asList(src.getLabel()));
-            visited.add(src.getLabel());
-            while (!queue.isEmpty()) {
-                List<String> path = queue.poll();
-                String current = path.get(path.size() - 1);
-                if (current.equals(dst.getLabel())) return new Path(path);
-                for (GraphEdge edge : edges) {
-                    if (edge.getSrc().equals(current) && !visited.contains(edge.getDst())) {
-                        visited.add(edge.getDst());
-                        List<String> newPath = new ArrayList<>(path);
-                        newPath.add(edge.getDst());
-                        queue.add(newPath);
-                    }
-                }
-            }
-        } else if (algo == Algorithm.DFS) {
-            Stack<List<String>> stack = new Stack<>();
-            Set<String> visited = new HashSet<>();
-            stack.push(Arrays.asList(src.getLabel()));
-            while (!stack.isEmpty()) {
-                List<String> path = stack.pop();
-                String current = path.get(path.size() - 1);
-                if (current.equals(dst.getLabel())) return new Path(path);
-                if (!visited.contains(current)) {
-                    visited.add(current);
-                    for (GraphEdge edge : edges) {
-                        if (edge.getSrc().equals(current) && !visited.contains(edge.getDst())) {
-                            List<String> newPath = new ArrayList<>(path);
-                            newPath.add(edge.getDst());
-                            stack.push(newPath);
-                        }
-                    }
-                }
-            }
-        }
-        return null;
+    // ---------- search (Strategy + Template) ----------
+
+    /**
+     * Picks a {@link SearchStrategy} based on {@code algo} and delegates.
+     * This is the Strategy Pattern's selection point.
+     */
+    public Path GraphSearch(String src, String dst, Algorithm algo) {
+        SearchStrategy strategy = createStrategy(algo);
+        return strategy.search(this, src, dst);
     }
+
+    /**
+     * Factory method to instantiate the correct SearchStrategy.
+     * To add a new algorithm in the future, add it to the Algorithm enum
+     * and add a new case here returning the new strategy implementation.
+     */
+    private SearchStrategy createStrategy(Algorithm algo) {
+        if (algo == null) {
+            throw new IllegalArgumentException("Algorithm cannot be null");
+        }
+        switch (algo) {
+            case BFS:         return new BFSSearch();
+            case DFS:         return new DFSSearch();
+            case RANDOM_WALK: return new RandomWalkSearch();
+            default:
+                throw new IllegalArgumentException("Unsupported algorithm: " + algo);
+        }
+    }
+
+    // ---------- accessors ----------
 
     public Set<String> getNodes() {
         return nodes;
@@ -127,6 +118,8 @@ public class Graph {
         return edges;
     }
 
+    // ---------- output ----------
+
     public void outputGraph(String filepath) throws IOException {
         try (FileWriter writer = new FileWriter(filepath)) {
             writer.write(toString());
@@ -135,27 +128,38 @@ public class Graph {
 
     public void outputDOTGraph(String path) throws IOException {
         try (FileWriter writer = new FileWriter(path)) {
-            writer.write("digraph G {\n");
+            writer.write(GraphConstants.DIGRAPH_HEADER + "\n");
             for (String node : nodes) {
-                writer.write("    " + node + ";\n");
+                writer.write(GraphConstants.INDENT + node + GraphConstants.STATEMENT_TERMINATOR + "\n");
             }
             for (GraphEdge edge : edges) {
-                writer.write("    " + edge.getSrc() + " -> " + edge.getDst() + ";\n");
+                writer.write(GraphConstants.INDENT + edge.getSrc() + " "
+                        + GraphConstants.EDGE_ARROW + " " + edge.getDst()
+                        + GraphConstants.STATEMENT_TERMINATOR + "\n");
             }
-            writer.write("}\n");
+            writer.write(GraphConstants.DIGRAPH_FOOTER + "\n");
         }
     }
 
     @Override
     public String toString() {
-        String nodeList = nodes.stream().collect(Collectors.joining(", "));
-        String edgeList = edges.stream()
-                .map(GraphEdge::toString)
-                .collect(Collectors.joining(", "));
+        return buildSummary();
+    }
 
-        return "Number of nodes: " + nodes.size() + "\n" +
-               "Node labels: " + nodeList + "\n" +
-               "Number of edges: " + edges.size() + "\n" +
-               "Edges: " + edgeList + "\n";
+    // ---------- private formatting helpers (Refactor #4) ----------
+
+    private String buildSummary() {
+        return "Number of nodes: " + nodes.size() + "\n"
+             + "Node labels: " + formatNodeList() + "\n"
+             + "Number of edges: " + edges.size() + "\n"
+             + "Edges: " + formatEdgeList() + "\n";
+    }
+
+    private String formatNodeList() {
+        return nodes.stream().collect(Collectors.joining(", "));
+    }
+
+    private String formatEdgeList() {
+        return edges.stream().map(GraphEdge::toString).collect(Collectors.joining(", "));
     }
 }

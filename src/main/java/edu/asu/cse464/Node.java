@@ -2,10 +2,19 @@ package edu.asu.cse464;
 
 import java.util.Objects;
 
-public class Node {
-    private String label;
+/**
+ * Represents a single node in the graph. Introduced as part of Refactor #5
+ * (Replace Primitive (String) with Object) so that paths can carry richer
+ * semantics and produce trace output in the form {@code Node{label}}.
+ */
+public final class Node {
+
+    private final String label;
 
     public Node(String label) {
+        if (label == null || label.trim().isEmpty()) {
+            throw new IllegalArgumentException("Node label cannot be null or empty");
+        }
         this.label = label;
     }
 
@@ -16,7 +25,7 @@ public class Node {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Node)) return false;
         Node node = (Node) o;
         return Objects.equals(label, node.label);
     }
@@ -28,6 +37,6 @@ public class Node {
 
     @Override
     public String toString() {
-        return label;
+        return "Node{" + label + "}";
     }
 }
